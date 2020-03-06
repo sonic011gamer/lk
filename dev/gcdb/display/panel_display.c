@@ -99,8 +99,8 @@ static int dsi_panel_ctl_base_setup(struct msm_panel_info *pinfo,
 	}
 
 	/* Both DSI0 and DSI1 use the same regulator */
-	pinfo->mipi.reg_base = DSI0_REGULATOR_BASE + base_offset;
-	pinfo->mipi.sreg_base = DSI0_REGULATOR_BASE + base_offset;
+//	pinfo->mipi.reg_base = DSI0_REGULATOR_BASE + base_offset;
+//	pinfo->mipi.sreg_base = DSI0_REGULATOR_BASE + base_offset;
 
 	dprintf(SPEW, "%s: panel dest=%s, ctl_base=0x%08x, phy_base=0x%08x\n",
 		__func__, panel_destination, pinfo->mipi.ctl_base,

@@ -4,7 +4,7 @@ LOCAL_DIR := $(GET_LOCAL_DIR)
 
 TARGET := msm8610
 
-MODULES += app/aboot
+MODULES += app/game
 
 ifeq ($(TARGET_BUILD_VARIANT),user)
 DEBUG := 0

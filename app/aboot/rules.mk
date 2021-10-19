@@ -10,7 +10,8 @@ OBJS += \
 	$(LOCAL_DIR)/aboot.o \
 	$(LOCAL_DIR)/fastboot.o \
 	$(LOCAL_DIR)/recovery.o \
-	$(LOCAL_DIR)/fvbootstrapper.o
+	$(LOCAL_DIR)/fvbootstrapper.o \
+	$(LOCAL_DIR)/splash.o
 
 ifeq ($(ENABLE_UNITTEST_FW), 1)
 OBJS += \

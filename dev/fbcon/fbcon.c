@@ -252,15 +252,17 @@ static void fbcon_flush(void)
 /* TODO: Take stride into account */
 static void fbcon_scroll_up(void)
 {
+	unsigned bytes_per_bpp = config->bpp / 8;
 	unsigned short *dst = config->base;
-	unsigned short *src = dst + (config->width * FONT_HEIGHT);
-	unsigned count = config->width * (config->height - FONT_HEIGHT);
+	unsigned short *src = dst + (config->width * FONT_HEIGHT * bytes_per_bpp);
+	unsigned count = config->width * (config->height - FONT_HEIGHT) * bytes_per_bpp;
 
 	while(count--) {
 		*dst++ = *src++;
 	}
 
-	count = config->width * FONT_HEIGHT;
+	count = (config->width * bytes_per_bpp) * FONT_HEIGHT;
+	dst = config->base + (config->width * config->height * bytes_per_bpp);
 	while(count--) {
 		*dst++ = BGCOLOR;
 	}

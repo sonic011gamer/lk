@@ -89,9 +89,7 @@ static uint32_t mdss_uefi_pll_clock(uint8_t enable, struct msm_panel_info *pinfo
 
 void mdss_uefi_display_init(uint32_t rev)
 {
-	writel(UEFI_FB_BASE, MDP_PP_0_BASE + PIPE_SSPP_SRC0_ADDR);
-	writel(1, MDP_CTL_0_BASE + CTL_FLUSH);
-	writel(1, MDP_CTL_1_BASE + CTL_FLUSH); 
+	writel(UEFI_FB_BASE, 0xFD990008);
 	
 	panel.power_func		= mdss_uefi_enable_power;
 	panel.clk_func			= mdss_uefi_panel_clock;

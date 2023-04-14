@@ -50,6 +50,7 @@
 #include "include/panel_auo_400p_cmd.h"
 #include "include/panel_auo_390p_cmd.h"
 #include "include/panel_st7789v2_qvga_spi_cmd.h"
+#include "include/panel_tequila_720p_video.h"
 
 #define DISPLAY_MAX_PANEL_DETECTION 0
 #define ILI9806E_FWVGA_VIDEO_PANEL_POST_INIT_DELAY 68
@@ -80,6 +81,7 @@ enum {
 	AUO_400P_CMD_PANEL,
 	AUO_390P_CMD_PANEL,
 	ST7789v2_QVGA_SPI_CMD_PANEL,
+	TEQUILA_720P_VIDEO_PANEL,
 	UNKNOWN_PANEL
 };
 
@@ -101,6 +103,7 @@ static struct panel_list supp_panels[] = {
 	{"auo_400p_cmd", AUO_400P_CMD_PANEL},
 	{"auo_390p_cmd", AUO_390P_CMD_PANEL},
 	{"ST7789V2_qvga_cmd", ST7789v2_QVGA_SPI_CMD_PANEL},
+	{"tequila_720p_video", TEQUILA_720P_VIDEO_PANEL},
 };
 
 static uint32_t panel_id;
@@ -446,6 +449,30 @@ static int init_panel_data(struct panel_struct *panelstruct,
 		pinfo->spi.signature_len	= st7789v2_signature_len;
 		pan_type = PANEL_TYPE_SPI;
 		break;
+	case TEQUILA_720P_VIDEO_PANEL:
+		panelstruct->paneldata	  = &tequila_720p_video_panel_data;
+		panelstruct->panelres	  = &tequila_720p_video_panel_res;
+		panelstruct->color		  = &tequila_720p_video_color;
+		panelstruct->videopanel   = &tequila_720p_video_video_panel;
+		panelstruct->commandpanel = &tequila_720p_video_command_panel;
+		panelstruct->state		  = &tequila_720p_video_state;
+		panelstruct->laneconfig   = &tequila_720p_video_lane_config;
+		panelstruct->paneltiminginfo
+					 = &tequila_720p_video_timing_info;
+		panelstruct->panelresetseq
+					 = &tequila_720p_video_reset_seq;
+		panelstruct->backlightinfo = &tequila_720p_video_backlight;
+		pinfo->mipi.panel_on_cmds
+					= tequila_720p_video_on_command;
+		pinfo->mipi.num_of_panel_on_cmds
+					= TEQUILA_720P_VIDEO_ON_COMMAND;
+		pinfo->mipi.panel_off_cmds
+					= tequila_720p_video_off_command;
+		pinfo->mipi.num_of_panel_off_cmds
+					= TEQUILA_720P_VIDEO_OFF_COMMAND;
+		memcpy(phy_db->timing,
+				tequila_720p_video_timings, TIMING_SIZE);
+		break;
 	case UNKNOWN_PANEL:
 	default:
 		memset(panelstruct, 0, sizeof(struct panel_struct));
@@ -518,7 +545,7 @@ int oem_panel_select(const char *panel_name, struct panel_struct *panelstruct,
 				panel_id = AUO_CX_QVGA_CMD_PANEL;
 			break;
 		default:
-			panel_id = HX8394D_720P_VIDEO_PANEL;
+			panel_id = TEQUILA_720P_VIDEO_PANEL;
 			break;
 		}
 		break;
@@ -545,7 +572,7 @@ int oem_panel_select(const char *panel_name, struct panel_struct *panelstruct,
 	default:
 		dprintf(CRITICAL, "Display not enabled for %d HW type\n",
 			hw_id);
-		return PANEL_TYPE_UNKNOWN;
+		return TEQUILA_720P_VIDEO_PANEL;
 	}
 
 panel_init:

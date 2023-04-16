@@ -50,7 +50,7 @@ ifeq ($(ENABLE_TRUSTZONE),1)
 endif
 
 INCLUDES := -I$(BUILDDIR) -Iinclude
-CFLAGS := -O2 -g -fno-builtin -finline -W -Wall -Wno-multichar -Wno-unused-parameter -Wno-unused-function $(LKLE_CFLAGS) -include $(CONFIGHEADER)
+CFLAGS := -O2 -g -fno-builtin -finline -W -Wall -Wno-implicit-function-declaration -Wno-missing-field-initializers -Wno-unused-variable -Wno-multichar -Wno-unused-parameter -Wno-unused-function $(LKLE_CFLAGS) -include $(CONFIGHEADER)
 #CFLAGS += -Werror
 ifeq ($(EMMC_BOOT),1)
   CFLAGS += -D_EMMC_BOOT=1

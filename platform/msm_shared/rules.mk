@@ -249,8 +249,7 @@ DEFINES += DISPLAY_TYPE_MDSS=1
             $(LOCAL_DIR)/crypto5_eng.o \
             $(LOCAL_DIR)/crypto5_wrapper.o \
             $(LOCAL_DIR)/dload_util.o \
-            $(LOCAL_DIR)/shutdown_detect.o \
-            $(LOCAL_DIR)/mdss_efifb.o
+            $(LOCAL_DIR)/shutdown_detect.o
 
 endif
 

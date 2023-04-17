@@ -201,10 +201,6 @@ bool target_display_panel_node(char *pbuf, uint16_t buf_size)
 
 void target_display_init(const char *panel_name)
 {
-	#if CHAINLOADED_UEFI
-	mdss_uefi_display_init(MDP_REV_304);
-	return;
-	#else
 	uint32_t panel_loop = 0;
 	uint32_t ret = 0;
 	struct oem_panel_data oem;
@@ -234,14 +230,9 @@ void target_display_init(const char *panel_name)
 		dprintf(INFO, "Forcing continuous splash disable\n");
 		target_force_cont_splash_disable(true);
 	}
-	#endif
 }
 
 void target_display_shutdown(void)
 {
-	#if CHAINLOADED_UEFI
-	return;
-	#else
-	gcdb_display_shutdown();
-	#endif
+	//gcdb_display_shutdown();
 }

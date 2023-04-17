@@ -48,6 +48,7 @@
 #include "include/panel_hx8389b_qhd_video.h"
 #include "include/panel_otm8018b_fwvga_video.h"
 #include "include/panel_nt35590_720p_video.h"
+#include "include/panel_tdo.h"
 
 /* Number of dectectable panels */
 #define DISPLAY_MAX_PANEL_DETECTION 2
@@ -62,6 +63,7 @@ HX8379A_WVGA_VIDEO_PANEL,
 NT35590_720P_VIDEO_PANEL,
 HX8389B_QHD_VIDEO_PANEL,
 OTM8018B_FWVGA_VIDEO_PANEL,
+TDO_720P_VIDEO_PANEL,
 UNKNOWN_PANEL
 };
 
@@ -246,6 +248,30 @@ static int init_panel_data(struct panel_struct *panelstruct,
 		memcpy(phy_db->timing,
 				hx8389b_qhd_video_timings, TIMING_SIZE);
 		break;
+	case TDO_720P_VIDEO_PANEL:
+		panelstruct->paneldata    = &tdo_hd0466k40002_0810_panel_data;
+		panelstruct->panelres     = &tdo_hd0466k40002_0810_panel_res;
+		panelstruct->color        = &tdo_hd0466k40002_0810_color;
+		panelstruct->videopanel   = &tdo_hd0466k40002_0810_video_panel;
+		panelstruct->commandpanel = &tdo_hd0466k40002_0810_command_panel;
+		panelstruct->state        = &tdo_hd0466k40002_0810_state;
+		panelstruct->laneconfig   = &tdo_hd0466k40002_0810_lane_config;
+		panelstruct->paneltiminginfo
+					 = &tdo_hd0466k40002_0810_timing_info;
+		panelstruct->panelresetseq
+					 = &tdo_hd0466k40002_0810_reset_seq;
+		panelstruct->backlightinfo = &tdo_hd0466k40002_0810_backlight;
+		pinfo->mipi.panel_on_cmds
+					= tdo_hd0466k40002_0810_on_command;
+		pinfo->mipi.num_of_panel_on_cmds
+					= TDO_HD0466K40002_0810_ON_COMMAND;
+		pinfo->mipi.panel_off_cmds
+					= tdo_hd0466k40002_0810_off_command;
+		pinfo->mipi.num_of_panel_off_cmds
+					= TDO_HD0466K40002_0810_OFF_COMMAND;
+		memcpy(phy_db->timing,
+				tdo_hd0466k40002_0810_timings, TIMING_SIZE);
+		break;
 	case UNKNOWN_PANEL:
 		memset(panelstruct, 0, sizeof(struct panel_struct));
 		memset(pinfo->mipi.panel_on_cmds, 0,
@@ -314,8 +340,9 @@ int oem_panel_select(const char *panel_name, struct panel_struct *panelstruct,
 		panel_id = TRULY_WVGA_VIDEO_PANEL;
 		break;
 	default:
-		dprintf(CRITICAL, "Display not enabled for %d HW type\n", hw_id);
-		return PANEL_TYPE_UNKNOWN;
+		dprintf(CRITICAL, "Display enabled for %d HW type\n", hw_id);
+		panel_id = TDO_720P_VIDEO_PANEL;
+		break;
 	}
 
 	return init_panel_data(panelstruct, pinfo, phy_db);

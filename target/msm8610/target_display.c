@@ -219,8 +219,8 @@ void target_display_init(const char *panel_name)
 		ret = gcdb_display_init(oem.panel, MDP_REV_304,(void *)MIPI_FB_ADDR);
 		if (ret) {
 			/*Panel signature did not match, turn off the display*/
-//			target_force_cont_splash_disable(true);
-//			msm_display_off();
+			target_force_cont_splash_disable(true);
+			msm_display_off();
 		} else {
 			break;
 		}

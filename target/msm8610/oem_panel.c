@@ -285,29 +285,8 @@ static int init_panel_data(struct panel_struct *panelstruct,
 		dprintf(CRITICAL, "Unknown Panel");
 		return PANEL_TYPE_UNKNOWN;
 	default:
-		panelstruct->paneldata    = &tdo_hd0466k40002_0810_panel_data;
-		panelstruct->panelres     = &tdo_hd0466k40002_0810_panel_res;
-		panelstruct->color        = &tdo_hd0466k40002_0810_color;
-		panelstruct->videopanel   = &tdo_hd0466k40002_0810_video_panel;
-		panelstruct->commandpanel = &tdo_hd0466k40002_0810_command_panel;
-		panelstruct->state        = &tdo_hd0466k40002_0810_state;
-		panelstruct->laneconfig   = &tdo_hd0466k40002_0810_lane_config;
-		panelstruct->paneltiminginfo
-					 = &tdo_hd0466k40002_0810_timing_info;
-		panelstruct->panelresetseq
-					 = &tdo_hd0466k40002_0810_reset_seq;
-		panelstruct->backlightinfo = &tdo_hd0466k40002_0810_backlight;
-		pinfo->mipi.panel_on_cmds
-					= tdo_hd0466k40002_0810_on_command;
-		pinfo->mipi.num_of_panel_on_cmds
-					= TDO_HD0466K40002_0810_ON_COMMAND;
-		pinfo->mipi.panel_off_cmds
-					= tdo_hd0466k40002_0810_off_command;
-		pinfo->mipi.num_of_panel_off_cmds
-					= TDO_HD0466K40002_0810_OFF_COMMAND;
-		memcpy(phy_db->timing,
-				tdo_hd0466k40002_0810_timings, TIMING_SIZE);
-		break;
+		dprintf(CRITICAL, "Panel ID not detected %d\n", panel_id);
+		return PANEL_TYPE_UNKNOWN;
 	}
 	return pan_type;
 }
@@ -327,8 +306,43 @@ int oem_panel_select(const char *panel_name, struct panel_struct *panelstruct,
 	uint32_t target_id = board_target_id();
 
 	target_id = (target_id >> 16) & 0xFF;
+	switch (hw_id) {
+	case HW_PLATFORM_QRD:
+		switch (platform_subtype) {
+			case QRD_DEF:
+			case QRD_SKUAA:
+				panel_id = HX8379A_WVGA_VIDEO_PANEL;
+				break;
+			case QRD_SKUAB:
+				if (target_id == 0x1)	// 1st HW version
+					panel_id = OTM8018B_FWVGA_VIDEO_PANEL;
+				else if (target_id == 0x2)	//2nd HW version
+					panel_id = HX8389B_QHD_VIDEO_PANEL;
+				else
+					dprintf(CRITICAL, "SKUAB Display not enabled for %d type\n",
+							target_id);
+				break;
+			default:
+				dprintf(CRITICAL, "QRD Display not enabled for %d type\n",
+							platform_subtype);
+				return PANEL_TYPE_UNKNOWN;
+		}
+		break;
+	case HW_PLATFORM_MTP:
+		if (0 == platform_subtype)
+			panel_id = TDO_720P_VIDEO_PANEL;
+		else
+			panel_id = TDO_720P_VIDEO_PANEL;
+		break;
 
-	panel_id = TDO_720P_VIDEO_PANEL;
+	case HW_PLATFORM_SURF:
+		panel_id = TRULY_WVGA_VIDEO_PANEL;
+		break;
+	default:
+		dprintf(CRITICAL, "Display enabled for %d HW type\n", hw_id);
+		panel_id = TDO_720P_VIDEO_PANEL;
+		break;
+	}
 
 	return init_panel_data(panelstruct, pinfo, phy_db);
 }

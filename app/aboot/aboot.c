@@ -762,9 +762,9 @@ void boot_linux(void *kernel, unsigned *tags,
 #endif
 
 	/* Turn off splash screen if enabled */
-//#if DISPLAY_SPLASH_SCREEN
-//	target_display_shutdown();
-//#endif
+#if DISPLAY_SPLASH_SCREEN
+	target_display_shutdown();
+#endif
 
 	/* Perform target specific cleanup */
 	target_uninit();

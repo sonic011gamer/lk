@@ -52,7 +52,7 @@ static struct panel_config tequila_720p_video_panel_data = {
 /* Panel resolution                                                          */
 /*---------------------------------------------------------------------------*/
 static struct panel_resolution tequila_720p_video_panel_res = {
-	720, 1280, 60, 40, 50, 0, 14, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	720, 1280, 80, 20, 8, 0, 14, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
 /*---------------------------------------------------------------------------*/
@@ -147,7 +147,7 @@ static struct commandpanel_info tequila_720p_video_command_panel = {
 /* Video mode panel information                                              */
 /*---------------------------------------------------------------------------*/
 static struct videopanel_info tequila_720p_video_video_panel = {
-	4, 0, 0, 0, 1, 1, 2, 0, 0x9
+	8, 0, 0, 0, 1, 1, 2, 0, 0x9
 };
 
 /*---------------------------------------------------------------------------*/
@@ -161,11 +161,11 @@ static struct lane_configuration tequila_720p_video_lane_config = {
 /* Panel timing                                                              */
 /*---------------------------------------------------------------------------*/
 static const uint32_t tequila_720p_video_timings[] = {
-	0x7B, 0x1A, 0x10, 0x00, 0x3C, 0x42, 0x14, 0x1C, 0x15, 0x03, 0x04, 0x00
+	0x76, 0x18, 0x10, 0x0, 0x3A, 0x3E, 0x14, 0x1C, 0x12, 0x3, 0x4
 };
 
 static struct panel_timing tequila_720p_video_timing_info = {
-	0, 4, 0x04, 0x1a
+	0, 4, 0xC2, 0x15
 };
 
 /*---------------------------------------------------------------------------*/

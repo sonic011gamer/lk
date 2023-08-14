@@ -1,4 +1,4 @@
-/* Copyright (c) 2014-2015, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2014-2015, 2017-2018, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -45,6 +45,7 @@
 #include "include/panel_hx8379c_fwvga_video.h"
 #include "include/panel_hx8394d_qhd_video.h"
 #include "include/panel_fl10802_fwvga_video.h"
+#include "include/panel_tequila_720p_video.h"
 
 #define DISPLAY_MAX_PANEL_DETECTION 0
 #define ILI9806E_FWVGA_VIDEO_PANEL_POST_INIT_DELAY 68
@@ -70,6 +71,7 @@ enum {
 	HX8379C_FWVGA_VIDEO_PANEL,
 	HX8394D_QHD_VIDEO_PANEL,
 	FL10802_FWVGA_VIDEO_PANEL,
+	TEQUILA_720P_VIDEO_PANEL,
 	UNKNOWN_PANEL
 };
 
@@ -85,7 +87,8 @@ static struct panel_list supp_panels[] = {
 	{"ili9806e_fwvga_video",ILI9806E_FWVGA_VIDEO_PANEL},
 	{"hx8379c_fwvga_video",HX8379C_FWVGA_VIDEO_PANEL},
 	{"hx8394d_qhd_video", HX8394D_QHD_VIDEO_PANEL},
-	{"fl10802_fwvga_video", FL10802_FWVGA_VIDEO_PANEL}
+	{"fl10802_fwvga_video", FL10802_FWVGA_VIDEO_PANEL},
+	{"tequila_720p_video", TEQUILA_720P_VIDEO_PANEL},
 };
 
 static uint32_t panel_id;
@@ -321,6 +324,30 @@ static int init_panel_data(struct panel_struct *panelstruct,
 		pinfo->mipi.signature = FL10802_FWVGA_VIDEO_SIGNATURE;
 		pinfo->mipi.cmds_post_tg = 1;
 		break;
+	case TEQUILA_720P_VIDEO_PANEL:
+		panelstruct->paneldata	  = &tequila_720p_video_panel_data;
+		panelstruct->panelres	  = &tequila_720p_video_panel_res;
+		panelstruct->color		  = &tequila_720p_video_color;
+		panelstruct->videopanel   = &tequila_720p_video_video_panel;
+		panelstruct->commandpanel = &tequila_720p_video_command_panel;
+		panelstruct->state		  = &tequila_720p_video_state;
+		panelstruct->laneconfig   = &tequila_720p_video_lane_config;
+		panelstruct->paneltiminginfo
+					 = &tequila_720p_video_timing_info;
+		panelstruct->panelresetseq
+					 = &tequila_720p_video_reset_seq;
+		panelstruct->backlightinfo = &tequila_720p_video_backlight;
+		pinfo->mipi.panel_on_cmds
+					= tequila_720p_video_on_command;
+		pinfo->mipi.num_of_panel_on_cmds
+					= TEQUILA_720P_VIDEO_ON_COMMAND;
+		pinfo->mipi.panel_off_cmds
+					= tequila_720p_video_off_command;
+		pinfo->mipi.num_of_panel_off_cmds
+					= TEQUILA_720P_VIDEO_OFF_COMMAND;
+		memcpy(phy_db->timing,
+				tequila_720p_video_timings, TIMING_SIZE);
+		break;
 	case UNKNOWN_PANEL:
 	default:
 		memset(panelstruct, 0, sizeof(struct panel_struct));
@@ -371,21 +398,21 @@ int oem_panel_select(const char *panel_name, struct panel_struct *panelstruct,
 	case HW_PLATFORM_SURF:
 	case HW_PLATFORM_MTP:
 	case HW_PLATFORM_RCM:
-		panel_id = HX8394D_720P_VIDEO_PANEL;
+		panel_id = TEQUILA_720P_VIDEO_PANEL;
 		break;
 	case HW_PLATFORM_QRD:
 		switch (platform_subtype) {
 			case QRD_SKUA:
-				panel_id = HX8379A_FWVGA_SKUA_VIDEO_PANEL;
+				panel_id = TEQUILA_720P_VIDEO_PANEL;
 				break;
 			case QRD_SKUC:
-				panel_id = ILI9806E_FWVGA_VIDEO_PANEL;
+				panel_id = TEQUILA_720P_VIDEO_PANEL;
 				break;
 			case QRD_SKUE:
-				panel_id = HX8379C_FWVGA_VIDEO_PANEL;
+				panel_id = TEQUILA_720P_VIDEO_PANEL;
 				break;
 			case QRD_SKUT:
-				panel_id = FL10802_FWVGA_VIDEO_PANEL;
+				panel_id = TEQUILA_720P_VIDEO_PANEL;
 				break;
 			default:
 				dprintf(CRITICAL, "QRD Display not enabled for %d type\n",
@@ -396,7 +423,7 @@ int oem_panel_select(const char *panel_name, struct panel_struct *panelstruct,
 	default:
 		dprintf(CRITICAL, "Display not enabled for %d HW type\n",
 			hw_id);
-		return PANEL_TYPE_UNKNOWN;
+		return TEQUILA_720P_VIDEO_PANEL;
 	}
 
 panel_init:

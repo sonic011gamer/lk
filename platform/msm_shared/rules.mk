@@ -150,7 +150,6 @@ DEFINES += DISPLAY_TYPE_MDSS=1
 			$(LOCAL_DIR)/gpio.o \
 			$(LOCAL_DIR)/dload_util.o \
 			$(LOCAL_DIR)/edp.o \
-			$(LOCAL_DIR)/mdss_efifb.o \
 			$(LOCAL_DIR)/edp_util.o \
 			$(LOCAL_DIR)/edp_aux.o \
 			$(LOCAL_DIR)/edp_phy.o
@@ -269,7 +268,6 @@ DEFINES += DISPLAY_TYPE_MDSS=1
             $(LOCAL_DIR)/mipi_dsi_phy.o \
             $(LOCAL_DIR)/mipi_dsi_autopll.o \
             $(LOCAL_DIR)/mdss_hdmi.o \
-			$(LOCAL_DIR)/mdss_efifb.o \
             $(LOCAL_DIR)/hdmi_pll_28nm.o \
             $(LOCAL_DIR)/spmi.o \
             $(LOCAL_DIR)/bam.o \

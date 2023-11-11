@@ -70,8 +70,8 @@ static int dsi_panel_ctl_base_setup(struct msm_panel_info *pinfo,
 	base_phy_pll_offset = dsi_platform_base_offset_adjust(DSI0_PLL_BASE);
 	base1_phy_pll_offset = dsi_platform_base_offset_adjust(DSI1_PLL_BASE);
 	base_phy_reg_offset = dsi_platform_base_offset_adjust(DSI0_REGULATOR_BASE);
-	dprintf(SPEW, "base offset = %d, %x\n", base_offset, base_offset);
-
+	dprintf(INFO, "base offset = %d, %x\n", base_offset, base_offset);
+	
 	if (!strcmp(panel_destination, "DISPLAY_1")) {
 		pinfo->dest = DISPLAY_1;
 		pinfo->mipi.ctl_base = MIPI_DSI0_BASE + base_offset;
@@ -109,10 +109,10 @@ static int dsi_panel_ctl_base_setup(struct msm_panel_info *pinfo,
 	pinfo->mipi.reg_base = DSI0_REGULATOR_BASE + base_phy_reg_offset;
 	pinfo->mipi.sreg_base = DSI0_REGULATOR_BASE + base_phy_reg_offset;
 
-	dprintf(SPEW, "%s: panel dest=%s, ctl_base=0x%08x, phy_base=0x%08x\n",
+	dprintf(INFO, "%s: panel dest=%s, ctl_base=0x%08x, phy_base=0x%08x\n",
 		__func__, panel_destination, pinfo->mipi.ctl_base,
 		pinfo->mipi.phy_base);
-	dprintf(SPEW, "pll_base=%08x, spll_base=0x%08x, reg_base=0x%08x, sreg_base=%08x\n",
+	dprintf(INFO, "pll_base=%08x, spll_base=0x%08x, reg_base=0x%08x, sreg_base=%08x\n",
 		pinfo->mipi.pll_base, pinfo->mipi.spll_base,
 		pinfo->mipi.reg_base, pinfo->mipi.sreg_base);
 	return NO_ERROR;
@@ -141,7 +141,7 @@ int dsi_panel_init(struct msm_panel_info *pinfo,
 	pinfo->border_left = pstruct->panelres->hleft_border;
 	pinfo->border_right = pstruct->panelres->hright_border;
 
-	dprintf(SPEW, "%s: left=%d right=%d top=%d bottom=%d\n", __func__,
+	dprintf(INFO, "%s: left=%d right=%d top=%d bottom=%d\n", __func__,
 			pinfo->border_left, pinfo->border_right,
 			pinfo->border_top, pinfo->border_bottom);
 
@@ -163,7 +163,7 @@ int dsi_panel_init(struct msm_panel_info *pinfo,
 	if (pstruct->paneldata->panel_operating_mode & USE_DSI1_PLL_FLAG)
 		pinfo->mipi.use_dsi1_pll = 1;
 
-	dprintf(SPEW, "dual_pipe=%d pipe_swap=%d split_display=%d dst_split=%d\n",
+	dprintf(INFO, "dual_pipe=%d pipe_swap=%d split_display=%d dst_split=%d\n",
 		pinfo->lcdc.dual_pipe, pinfo->lcdc.pipe_swap,
 		pinfo->lcdc.split_display, pinfo->lcdc.dst_split);
 
@@ -389,7 +389,7 @@ int dsi_video_panel_config(struct msm_panel_info *pinfo,
 	if (pinfo->fbc.enabled && pinfo->fbc.comp_ratio) {
 		final_xres /= pinfo->fbc.comp_ratio;
 		final_width /=	pinfo->fbc.comp_ratio;
-		dprintf(SPEW, "DSI xres =%d final_width=%d\n",
+		dprintf(INFO, "DSI xres =%d final_width=%d\n",
 				final_xres, final_width);
 	}
 	final_yres = pinfo->yres;
@@ -473,7 +473,7 @@ int dsi_cmd_panel_config (struct msm_panel_info *pinfo,
 		if (pinfo->fbc.enabled && pinfo->fbc.comp_ratio) {
 			final_xres /= pinfo->fbc.comp_ratio;
 			final_width /=	pinfo->fbc.comp_ratio;
-			dprintf(SPEW, "DSI xres =%d final_width=%d\n",
+			dprintf(INFO, "DSI xres =%d final_width=%d\n",
 						final_xres, final_width);
 		}
 	}

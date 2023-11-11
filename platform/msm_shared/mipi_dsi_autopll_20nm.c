@@ -130,7 +130,7 @@ uint32_t mdss_dsi_pll_20nm_lock_status(uint32_t pll_base)
 	/* check pll lock first */
 	for (cnt = 0; cnt < 5; cnt++) {
 		status = readl(pll_base + MMSS_DSI_PHY_PLL_RESET_SM);
-		dprintf(SPEW, "%s: pll_base=%x cnt=%d status=%x\n",
+		dprintf(INFO, "%s: pll_base=%x cnt=%d status=%x\n",
 				__func__, pll_base, cnt, status);
 		status &= 0x20; /* bit 5 */
 		if (status)
@@ -144,7 +144,7 @@ uint32_t mdss_dsi_pll_20nm_lock_status(uint32_t pll_base)
 	/* check pll ready */
 	for (cnt = 0; cnt < 5; cnt++) {
 		status = readl(pll_base + MMSS_DSI_PHY_PLL_RESET_SM);
-		dprintf(SPEW, "%s: pll_base=%x cnt=%d status=%x\n",
+		dprintf(INFO, "%s: pll_base=%x cnt=%d status=%x\n",
 				__func__, pll_base, cnt, status);
 		status &= 0x40; /* bit 6 */
 		if (status)
@@ -236,14 +236,14 @@ static void mdss_dsi_pll_20nm_config_vco_rate(uint32_t pll_base, struct mdss_dsi
 	else
 		writel(0x0d, pll_base + MMSS_DSI_PHY_PLL_PLLLOCK_CMP_EN);
 
-	dprintf(SPEW, "div frac1=0x%x, div frac2 = 0x%x, div frac3=0x%x\n",
+	dprintf(INFO, "div frac1=0x%x, div frac2 = 0x%x, div frac3=0x%x\n",
 			readl(pll_base + MMSS_DSI_PHY_PLL_DIV_FRAC_START1),
 			readl(pll_base + MMSS_DSI_PHY_PLL_DIV_FRAC_START2),
 			readl(pll_base + MMSS_DSI_PHY_PLL_DIV_FRAC_START3));
-	dprintf(SPEW, "dec start1=0x%x, dec start2 = 0x%x\n",
+	dprintf(INFO, "dec start1=0x%x, dec start2 = 0x%x\n",
 			readl(pll_base + MMSS_DSI_PHY_PLL_DEC_START1),
 			readl(pll_base + MMSS_DSI_PHY_PLL_DEC_START2));
-	dprintf(SPEW, "plllock cmp1=0x%x,plllock cmp2= 0x%x, plllock cmp3=0x%x\n",
+	dprintf(INFO, "plllock cmp1=0x%x,plllock cmp2= 0x%x, plllock cmp3=0x%x\n",
 			readl(pll_base + MMSS_DSI_PHY_PLL_PLLLOCK_CMP1),
 			readl(pll_base + MMSS_DSI_PHY_PLL_PLLLOCK_CMP2),
 			readl(pll_base + MMSS_DSI_PHY_PLL_PLLLOCK_CMP3));
@@ -272,7 +272,7 @@ static void mdss_dsi_pll_20nm_config_vco_start(uint32_t pll_base)
 
 static void mdss_dsi_pll_20nm_config_powerdown(uint32_t pll_base)
 {
-	dprintf(SPEW, "Powerdown DSI PHY PLL \n");
+	dprintf(INFO, "Powerdown DSI PHY PLL \n");
 	writel(0x00, pll_base + MMSS_DSI_PHY_PLL_SYS_CLK_CTRL);
 	writel(0x01, pll_base + MMSS_DSI_PHY_PLL_CMN_MODE);
 	writel(0x82, pll_base + MMSS_DSI_PHY_PLL_PLL_VCOTAIL_EN);

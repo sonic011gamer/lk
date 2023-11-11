@@ -427,9 +427,6 @@ static uint8_t splash_override;
 /* Returns 1 if target supports continuous splash screen. */
 int target_cont_splash_screen()
 {
-#ifdef CHAINLOADED_UEFI
-	return 1;
-#else
 	uint8_t splash_screen = 0;
 	if(!splash_override) {
 		switch(board_hardware_id())
@@ -438,16 +435,15 @@ int target_cont_splash_screen()
 			case HW_PLATFORM_MTP:
 			case HW_PLATFORM_FLUID:
 			case HW_PLATFORM_LIQUID:
-				dprintf(SPEW, "Target_cont_splash=1\n");
+				dprintf(INFO, "Target_cont_splash=1\n");
 				splash_screen = 1;
 				break;
 			default:
-				dprintf(SPEW, "Target_cont_splash=0\n");
+				dprintf(INFO, "Target_cont_splash=0\n");
 				splash_screen = 0;
 		}
 	}
 	return splash_screen;
-#endif
 }
 
 void target_force_cont_splash_disable(uint8_t override)

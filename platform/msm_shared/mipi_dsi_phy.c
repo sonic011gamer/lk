@@ -495,7 +495,7 @@ int mdss_dsi_phy_init(struct mipi_panel_info *mipi)
 					mipi->sphy_base, mipi->reg_base);
 		break;
 	case DSI_PLL_TYPE_THULIUM:
-		dprintf(SPEW, "phy is configured with PLL driver\n");
+		dprintf(INFO, "phy is configured with PLL driver\n");
 		break;
 	case DSI_PLL_TYPE_28NM:
 	default:

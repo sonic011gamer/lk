@@ -28,6 +28,7 @@
  * SUCH DAMAGE.
  */
 
+#include <mdp5.h>
 #include <debug.h>
 #include <string.h>
 #include <stdlib.h>
@@ -37,7 +38,10 @@
 #include <kernel/event.h>
 #include <dev/udc.h>
 #include "fastboot.h"
-
+#include <reg.h>
+#include <platform/timer.h>
+#include <platform/iomap.h>
+#include <dev/fbcon.h>
 #ifdef USB30_SUPPORT
 #include <usb30_udc.h>
 #endif
@@ -154,6 +158,63 @@ void fastboot_publish(const char *name, const char *value)
 		var->next = varlist;
 		varlist = var;
 	}
+}
+
+#define MDP_PP_SYNC_CONFIG_VSYNC	0x004
+#define MDP_PP_AUTOREFRESH_CONFIG	0x030
+
+static void mdp5_enable_auto_refresh(struct fbcon_config *fb)
+{
+	uint32_t vsync_count = 19200000 / (fb->height * 60); /* 60 fps */
+	uint32_t mdss_mdp_rev = readl(MDP_HW_REV);
+	uint32_t pp0_base;
+
+
+	pp0_base = REG_MDP(0x71000);
+
+	fb->update_start = NULL;
+	thread_sleep(42);
+		uint32_t tmp0, tmp1, tmp2, tmp3, tmp4;
+	tmp0 = readl(REG_MDP(0x71004));
+	tmp1 = readl(REG_MDP(0x71008));
+	tmp2 = readl(REG_MDP(0x71020));
+	tmp3 = readl(REG_MDP(0x71024));
+	tmp4 = readl(REG_MDP(0x71010));
+	//int ctlstart = readl(MDP_CTL_0_BASE + CTL_START);
+	dprintf(INFO, "vsync counter = %X, vsync count height = %X, irq rdline =%X, irq wrline=%X, vsync init=%X \n", tmp0, tmp1, tmp2, tmp3,tmp4);
+	dprintf(INFO, "Value of ENABLE should be %X\n", (((1 << 0x1f) & 0x80000000) | (0 & ~0x80000000)));
+	dprintf(INFO, "Value of FRAME_COUNTER should be %X\n", (((1 << 0x0) & 0xffff) | ((((1 << 0x1f) & 0x80000000)) | ((0 & ~0x80000000) & ~0xffff ))));
+
+		dprintf(INFO, "Value of VSYNC_COUNT should be %X\n", (((1 << 0x1f) & 0x80000000) | (0 & ~0x80000000)));
+	dprintf(INFO, "Value of VSYNC COUNT HEIGHT should be %X\n", (((1 << 0x0) & 0xffff) | ((((1 << 0x1f) & 0x80000000)) | ((0 & ~0x80000000) & ~0xffff ))));
+	//dprintf(INFO, "vsync value is  %X\n", readl(pp0_base + MDP_PP_SYNC_CONFIG_VSYNC));
+	//dprintf(INFO, "autorefresh value is  %X\n", readl( pp0_base + MDP_PP_AUTOREFRESH_CONFIG));
+	writel(vsync_count | BIT(19), pp0_base + MDP_PP_SYNC_CONFIG_VSYNC);
+	writel(BIT(31) | 0, pp0_base + MDP_PP_AUTOREFRESH_CONFIG);
+	writel(1, MDP_CTL_0_BASE + CTL_START);
+
+
+
+	//dprintf(INFO, "vsync value is  %X\n", readl(pp0_base + MDP_PP_SYNC_CONFIG_VSYNC));
+	//dprintf(INFO, "autorefresh value is  %X\n", readl( pp0_base + MDP_PP_AUTOREFRESH_CONFIG));
+}
+
+static void cmd_oem_display_auto_refresh(const char *arg, void *data, unsigned sz)
+{
+	struct fbcon_config *fb = fbcon_display();
+
+	if (!fb) {
+		fastboot_fail("display not initialized");
+		return;
+	}
+
+	//if (!fb->update_start) {
+	//	fastboot_fail("display auto-refresh seems already enabled?");
+	//	return;
+	//}
+
+	mdp5_enable_auto_refresh(fb);
+	fastboot_okay("");
 }
 
 
@@ -735,10 +796,12 @@ int fastboot_init(void *base, unsigned size)
 	fastboot_register("oem help", cmd_help);
 	#if WITH_DEBUG_LOG_BUF
 	fastboot_register("oem lk_log", cmd_oem_lk_log);
+		fastboot_register("oem display-auto-refresh", cmd_oem_display_auto_refresh);
 	#endif
 	fastboot_register("getvar:", cmd_getvar);
 	fastboot_register("download:", cmd_download);
 	fastboot_publish("version", "0.5");
+	
 
 	thr = thread_create("fastboot", fastboot_handler, 0, DEFAULT_PRIORITY, 4096);
 	if (!thr)

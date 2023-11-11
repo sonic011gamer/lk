@@ -34,7 +34,6 @@
 #include <msm_panel.h>
 #include <mipi_dsi.h>
 #include <mdss_hdmi.h>
-#include <mdss_efifb.h>
 #include <pm8x41.h>
 #include <pm8x41_wled.h>
 #include <qpnp_wled.h>
@@ -169,7 +168,7 @@ int target_hdmi_panel_clock(uint8_t enable, struct msm_panel_info *pinfo)
 {
 	uint32_t ret;
 
-	dprintf(SPEW, "%s: target_panel_clock\n", __func__);
+	dprintf(INFO, "%s: target_panel_clock\n", __func__);
 
 	if (enable) {
 		mdp_gdsc_ctrl(enable);
@@ -434,7 +433,7 @@ int target_panel_clock(uint8_t enable, struct msm_panel_info *pinfo)
 		MMSS_DSI_PHY_PLL_CORE_KVCO_CODE);
 	pll_codes->codes[1] = readl_relaxed(pinfo->mipi.pll_base +
 		MMSS_DSI_PHY_PLL_CORE_VCO_TUNE);
-	dprintf(SPEW, "codes %d %d\n", pll_codes->codes[0],
+	dprintf(INFO, "codes %d %d\n", pll_codes->codes[0],
 		pll_codes->codes[1]);
 
 	if (pinfo->mipi.use_dsi1_pll)
@@ -524,7 +523,7 @@ static void wled_init(struct msm_panel_info *pinfo)
 		}
 	}
 
-	dprintf(SPEW, "%s: %d %d %d %d %d %d %d %d %d %d\n", __func__,
+	dprintf(INFO, "%s: %d %d %d %d %d %d %d %d %d %d\n", __func__,
 		config.display_type,
 		config.lab_min_volt, config.lab_max_volt,
 		config.ibb_min_volt, config.ibb_max_volt,

@@ -141,15 +141,18 @@ static void mdp_select_pipe_type(struct msm_panel_info *pinfo,
 		case MDSS_MDP_PIPE_TYPE_RGB:
 			*left_pipe = MDP_VP_0_RGB_0_BASE;
 			*right_pipe = MDP_VP_0_RGB_1_BASE;
+			dprintf(CRITICAL,"Selected RGB pipe\n");
 			break;
 		case MDSS_MDP_PIPE_TYPE_DMA:
 			*left_pipe = MDP_VP_0_DMA_0_BASE;
 			*right_pipe = MDP_VP_0_DMA_1_BASE;
+			dprintf(CRITICAL,"Selected DMA pipe\n");
 			break;
 		case MDSS_MDP_PIPE_TYPE_VIG:
 		default:
 			*left_pipe = MDP_VP_0_VIG_0_BASE;
 			*right_pipe = MDP_VP_0_VIG_1_BASE;
+			dprintf(CRITICAL,"Selected VIG pipe\n");
 			break;
 	}
 }
@@ -229,7 +232,7 @@ static void mdss_source_pipe_config(struct fbcon_config *fb, struct msm_panel_in
 
 	height = fb->height - pinfo->border_top - pinfo->border_bottom;
 	width = fb->width - pinfo->border_left - pinfo->border_right;
-
+	dprintf(CRITICAL,"Width %i, Height %i\n", width, height);
 	/* write active region size*/
 	img_size = (height << 16) | width;
 	out_size = img_size;
@@ -254,7 +257,7 @@ static void mdss_source_pipe_config(struct fbcon_config *fb, struct msm_panel_in
 		src_xy = (pinfo->border_top << 16) | fb_off;
 	}
 
-	dprintf(SPEW,"%s: src=%x fb_off=%x src_xy=%x dst_xy=%x\n",
+	dprintf(INFO,"%s: src=%x fb_off=%x src_xy=%x dst_xy=%x\n",
 			 __func__, out_size, fb_off, src_xy, dst_xy);
 	writel((uint32_t) fb->base, pipe_base + PIPE_SSPP_SRC0_ADDR);
 	writel(stride, pipe_base + PIPE_SSPP_SRC_YSTRIDE);
@@ -298,7 +301,7 @@ static void mdss_vbif_setup()
 		access_secure = restore_secure_cfg(SECURE_DEVICE_MDSS);
 
 	if (!access_secure) {
-		dprintf(SPEW, "MDSS VBIF registers unlocked by TZ.\n");
+		dprintf(INFO, "MDSS VBIF registers unlocked by TZ.\n");
 
 		/* Force VBIF Clocks on, needed for 8974 and 8x26 */
 		if (mdp_hw_rev < MDSS_MDP_HW_REV_103)
@@ -792,11 +795,11 @@ void mdss_fbc_cfg(struct msm_panel_info *pinfo)
 		((fbc->cd_bias) << 4) | ((fbc->pat_enable) << 3) |
 		((fbc->vlc_enable) << 2) | ((fbc->bflc_enable) << 1) | 1;
 
-	dprintf(SPEW, "width = %d, slice height = %d, pred_mode =%d, enc_mode = %d, \
+	dprintf(INFO, "width = %d, slice height = %d, pred_mode =%d, enc_mode = %d, \
 			comp_mode %d, qerr_enable = %d, cd_bias = %d\n",
 			width, fbc->slice_height, fbc->pred_mode, enc_mode,
 			fbc->comp_mode, fbc->qerr_enable, fbc->cd_bias);
-	dprintf(SPEW, "pat_enable %d, vlc_enable = %d, bflc_enable = %d\n",
+	dprintf(INFO, "pat_enable %d, vlc_enable = %d, bflc_enable = %d\n",
 			fbc->pat_enable, fbc->vlc_enable, fbc->bflc_enable);
 
 	budget_ctl = ((fbc->line_x_budget) << 12) |
@@ -806,7 +809,7 @@ void mdss_fbc_cfg(struct msm_panel_info *pinfo)
 		((fbc->lossy_mode_thd) << 8) |
 		((fbc->lossy_rgb_thd) << 4) | fbc->lossy_mode_idx;
 
-	dprintf(SPEW, "mode= 0x%x, budget_ctl = 0x%x, lossy_mode= 0x%x\n",
+	dprintf(INFO, "mode= 0x%x, budget_ctl = 0x%x, lossy_mode= 0x%x\n",
 			mode, budget_ctl, lossy_mode);
 	writel(mode, MDP_PP_0_BASE + MDSS_MDP_REG_PP_FBC_MODE);
 	writel(budget_ctl, MDP_PP_0_BASE + MDSS_MDP_REG_PP_FBC_BUDGET_CTL);
@@ -923,7 +926,7 @@ static uint32_t mdss_mdp_ctl_out_sel(struct msm_panel_info *pinfo,
 		mctl_intf_sel = BIT(5); /* Interface 1 */
 		sctl_intf_sel = BIT(4) | BIT(5); /* Interface 2 */
 	}
-	dprintf(SPEW, "%s: main ctl dest=%s sec ctl dest=%s\n", __func__,
+	dprintf(INFO, "%s: main ctl dest=%s sec ctl dest=%s\n", __func__,
 		(mctl_intf_sel & BIT(4)) ? "Intf2" : "Intf1",
 		(sctl_intf_sel & BIT(4)) ? "Intf2" : "Intf1");
 	return is_main_ctl ? mctl_intf_sel : sctl_intf_sel;
@@ -944,7 +947,7 @@ static void mdp_set_intf_base(struct msm_panel_info *pinfo,
 		*intf_base = MDP_INTF_1_BASE + mdss_mdp_intf_offset();
 		*sintf_base = MDP_INTF_2_BASE + mdss_mdp_intf_offset();
 	}
-	dprintf(SPEW, "%s: main intf=%s, sec intf=%s\n", __func__,
+	dprintf(INFO, "%s: main intf=%s, sec intf=%s\n", __func__,
 		(pinfo->dest == DISPLAY_2) ? "Intf2" : "Intf1",
 		(pinfo->dest == DISPLAY_2) ? "Intf1" : "Intf2");
 }
@@ -1075,7 +1078,7 @@ int mdp_edp_config(struct msm_panel_info *pinfo, struct fbcon_config *fb)
 int mdss_hdmi_config(struct msm_panel_info *pinfo, struct fbcon_config *fb)
 {
 	uint32_t left_pipe, right_pipe;
-	dprintf(SPEW, "ENTER: %s\n", __func__);
+	dprintf(INFO, "ENTER: %s\n", __func__);
 
 	mdss_intf_tg_setup(pinfo, MDP_INTF_3_BASE + mdss_mdp_intf_offset());
 	pinfo->pipe_type = MDSS_MDP_PIPE_TYPE_RGB;

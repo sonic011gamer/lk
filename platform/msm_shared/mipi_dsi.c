@@ -117,6 +117,7 @@ static int mdss_dsi_cmd_dma_trigger_for_panel(char dual_dsi,
 	dsb();
 
 	if (dual_dsi) {
+		dprintf(INFO,"is dualdsi!!!!");
 		writel(0x03030303, sctl_base + INT_CTRL);
 		writel(0x1, sctl_base + CMD_MODE_DMA_SW_TRIGGER);
 		dsb();
@@ -135,7 +136,7 @@ static int mdss_dsi_cmd_dma_trigger_for_panel(char dual_dsi,
 	}
 
 	writel((readl(base + INT_CTRL) | 0x01000001), base + INT_CTRL);
-	dprintf(SPEW, "Panel CMD: command mode dma tested successfully\n");
+	dprintf(INFO, "Panel CMD: command mode dma tested successfully\n");
 #endif
 	return status;
 }
@@ -168,7 +169,7 @@ static int mdss_dsi_wait4_video_done(uint32_t ctl_base)
 	} while (!read);
 
 	writel((readl(ctl_base + INT_CTRL) | 0x01000001), ctl_base + INT_CTRL);
-	dprintf(SPEW, "Panel wait_4_video_done: Recieved video mode done ack\n");
+	dprintf(INFO, "Panel wait_4_video_done: Recieved video mode done ack\n");
 
 	/* Skip BLLP 4ms */
 	mdelay(4);
@@ -653,7 +654,7 @@ int mdss_dsi_config(struct msm_fb_panel_data *panel)
 		}
 	}
 
-	dprintf(SPEW, "ctl_base=0x%08x, phy_base=0x%08x\n", mipi->ctl_base,
+	dprintf(INFO, "ctl_base=0x%08x, phy_base=0x%08x\n", mipi->ctl_base,
 		mipi->phy_base);
 
 	mdss_dsi_phy_init(mipi);
@@ -866,7 +867,7 @@ static int dsi_cmd_dma_trigger_for_panel()
 	}
 
 	writel((readl(DSI_INT_CTRL) | 0x01000001), DSI_INT_CTRL);
-	dprintf(SPEW, "Panel CMD: command mode dma tested successfully\n");
+	dprintf(INFO, "Panel CMD: command mode dma tested successfully\n");
 	return status;
 }
 

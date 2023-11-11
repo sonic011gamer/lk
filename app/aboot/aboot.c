@@ -3716,7 +3716,7 @@ void aboot_init(const struct app_descriptor *app)
 #if NO_ALARM_DISPLAY
 	if (!check_alarm_boot()) {
 #endif
-		dprintf(SPEW, "Display Init: Start\n");
+		dprintf(INFO, "Display Init: Start\n");
 #if ENABLE_WBC
 		/* Wait if the display shutdown is in progress */
 		while(pm_app_display_shutdown_in_prgs());
@@ -3727,7 +3727,7 @@ void aboot_init(const struct app_descriptor *app)
 #else
 		target_display_init(device.display_panel);
 #endif
-		dprintf(SPEW, "Display Init: Done\n");
+		dprintf(INFO, "Display Init: Done\n");
 #if NO_ALARM_DISPLAY
 	}
 #endif

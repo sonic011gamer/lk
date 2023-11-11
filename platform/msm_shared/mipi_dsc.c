@@ -244,7 +244,7 @@ void mdss_dsc_parameters_calc(struct msm_panel_info *pinfo)
 
 	dsc->bytes_in_slice = bytes_in_slice;
 
-	dprintf(SPEW, "%s: slice_per_line=%d pkt_per_line=%d bytes_in_slice=%d\n",
+	dprintf(INFO, "%s: slice_per_line=%d pkt_per_line=%d bytes_in_slice=%d\n",
 		__func__, slice_per_line, dsc->pkt_per_line, bytes_in_slice);
 
 	total_bytes = bytes_in_slice * slice_per_line;
@@ -253,7 +253,7 @@ void mdss_dsc_parameters_calc(struct msm_panel_info *pinfo)
 
 	dsc->slice_last_group_size = 3 - dsc->eol_byte_num;
 
-	dprintf(SPEW, "%s: pclk_per_line=%d total_bytes=%d eol_byte_num=%d\n",
+	dprintf(INFO, "%s: pclk_per_line=%d total_bytes=%d eol_byte_num=%d\n",
 		__func__, dsc->pclk_per_line, total_bytes, dsc->eol_byte_num);
 
 	dsc->bytes_per_pkt = bytes_in_slice * dsc->slice_per_pkt;
@@ -323,25 +323,25 @@ void mdss_dsc_parameters_calc(struct msm_panel_info *pinfo)
 	dsc->scale_decrement_interval = groups_per_line /
 		(dsc->initial_scale_value - 8);
 
-	dprintf(SPEW, "%s: initial_xmit_delay=%d\n", __func__,
+	dprintf(INFO, "%s: initial_xmit_delay=%d\n", __func__,
 		dsc->initial_xmit_delay);
 
-	dprintf(SPEW, "%s: bpg_offset, nfl=%d slice=%d\n", __func__,
+	dprintf(INFO, "%s: bpg_offset, nfl=%d slice=%d\n", __func__,
 		dsc->nfl_bpg_offset, dsc->slice_bpg_offset);
 
-	dprintf(SPEW, "%s: groups_per_line=%d chunk_size=%d\n", __func__,
+	dprintf(INFO, "%s: groups_per_line=%d chunk_size=%d\n", __func__,
 		groups_per_line, dsc->chunk_size);
-	dprintf(SPEW, "%s:min_rate_buffer_size=%d hrd_delay=%d\n", __func__,
+	dprintf(INFO, "%s:min_rate_buffer_size=%d hrd_delay=%d\n", __func__,
 		min_rate_buffer_size, hrd_delay);
-	dprintf(SPEW, "%s:initial_dec_delay=%d initial_scale_value=%d\n", __func__,
+	dprintf(INFO, "%s:initial_dec_delay=%d initial_scale_value=%d\n", __func__,
 		dsc->initial_dec_delay, dsc->initial_scale_value);
-	dprintf(SPEW, "%s:slice_bits=%d, groups_total=%d\n", __func__,
+	dprintf(INFO, "%s:slice_bits=%d, groups_total=%d\n", __func__,
 		slice_bits, groups_total);
-	dprintf(SPEW, "%s: first_line_bgp_offset=%d slice_height=%d\n", __func__,
+	dprintf(INFO, "%s: first_line_bgp_offset=%d slice_height=%d\n", __func__,
 		dsc->first_line_bpg_offset, dsc->slice_height);
-	dprintf(SPEW, "%s:final_value=%d final_scale=%d\n", __func__,
+	dprintf(INFO, "%s:final_value=%d final_scale=%d\n", __func__,
 		final_value, final_scale);
-	dprintf(SPEW, "%s: sacle_increment_interval=%d scale_decrement_interval=%d\n",
+	dprintf(INFO, "%s: sacle_increment_interval=%d scale_decrement_interval=%d\n",
 		__func__, dsc->scale_increment_interval,
 		dsc->scale_decrement_interval);
 }
@@ -397,7 +397,7 @@ void mdss_dsc_mdp_config(struct msm_panel_info *pinfo,
 	data |= (dsc->convert_rgb << 1);
 	data |= dsc->input_10_bits;
 
-	dprintf(SPEW, "%s: %d %d %d %d %d %d %d %d, data=%x\n",
+	dprintf(INFO, "%s: %d %d %d %d %d %d %d %d, data=%x\n",
 		__func__,
 		dsc->initial_lines , dsc->slice_last_group_size,
 		dsc->bpp, dsc->block_pred_enable, dsc->line_buf_depth,
@@ -416,7 +416,7 @@ void mdss_dsc_mdp_config(struct msm_panel_info *pinfo,
 	data = dsc->chunk_size << 16;
 	writel(data, offset + MDSS_MDP_DSC_CHUNK_SIZE);
 
-	dprintf(SPEW, "%s: pic_w=%d pic_h=%d, slice_h=%d slice_w=%d, chunk=%d\n",
+	dprintf(INFO, "%s: pic_w=%d pic_h=%d, slice_h=%d slice_w=%d, chunk=%d\n",
 		__func__, dsc->pic_width, dsc->pic_height,
 		dsc->slice_width, dsc->slice_height, dsc->chunk_size);
 

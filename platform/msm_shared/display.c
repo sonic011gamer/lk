@@ -28,6 +28,8 @@
 
 #include <debug.h>
 #include <err.h>
+#include <bits.h>
+#include <reg.h>
 #include <msm_panel.h>
 #include <mdp4.h>
 #include <mipi_dsi.h>
@@ -206,11 +208,20 @@ int msm_display_on()
 	case MIPI_CMD_PANEL:
 		dprintf(INFO, "Turn on MIPI_CMD_PANEL.\n");
 		ret = mdp_dma_on(pinfo);
+		int auto_refresh = !!(readl(MDP_PP_0_BASE + 0x030) & BIT(31));
+		dprintf(INFO, "Turned on MIPI_CMD_PANEL. %X\n", auto_refresh);
 		if (ret)
+		{
+			dprintf(INFO, "Going to msm_display_on_out\n");
 			goto msm_display_on_out;
+		}
+		dprintf(INFO, "Getting MDP revision\n");
 		mdp_rev = mdp_get_revision();
+		dprintf(INFO, "Gotten MDP revision\n");
+
 		if (mdp_rev != MDP_REV_50 && mdp_rev != MDP_REV_304 &&
 						mdp_rev != MDP_REV_305) {
+			dprintf(INFO, "mipi_cmd_trigger\n");
 			ret = mipi_cmd_trigger();
 			if (ret)
 				goto msm_display_on_out;

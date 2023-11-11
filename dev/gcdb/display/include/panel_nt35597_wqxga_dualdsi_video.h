@@ -241,7 +241,7 @@ static struct panel_timing nt35597_wqxga_dualdsi_video_timing_info = {
 /* Panel reset sequence                                                      */
 /*---------------------------------------------------------------------------*/
 static struct panel_reset_sequence nt35597_wqxga_dualdsi_video_reset_seq = {
-	{1, 0, 1, }, {20, 20, 50, }, 2
+	{1, 0, 1, }, {17, 0, 17, }, 2
 };
 
 /*---------------------------------------------------------------------------*/

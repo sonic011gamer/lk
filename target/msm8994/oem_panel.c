@@ -55,6 +55,7 @@
 #include "include/panel_nt35597_wqxga_cmd.h"
 #include "include/panel_duke_wqhd_dualdsi_cmd.h"
 #include "include/panel_sergej_wqhd_dualdsi_cmd.h"
+#include "include/panel_talkov_wqhd_dualdsi_cmd.h"
 
 /*---------------------------------------------------------------------------*/
 /* static panel selection variable                                           */
@@ -72,6 +73,7 @@ NOVATEK_WQXGA_VIDEO_PANEL,
 NOVATEK_WQXGA_CMD_PANEL,
 DUKE_WQHD_DUALDSI_CMD_PANEL,
 SERGEJ_WQHD_DUALDSI_CMD_PANEL,
+TALKOV_WQHD_DUALDSI_CMD_PANEL,
 UNKNOWN_PANEL
 };
 
@@ -92,6 +94,7 @@ static struct panel_list supp_panels[] = {
 	{"nt35597_wqxga_cmd", NOVATEK_WQXGA_CMD_PANEL},
 	{"duke_wqhd_dualdsi_cmd", DUKE_WQHD_DUALDSI_CMD_PANEL},
 	{"sergej_wqhd_dualdsi_cmd", SERGEJ_WQHD_DUALDSI_CMD_PANEL},
+	{"talkov_wqhd_dualdsi_cmd", TALKOV_WQHD_DUALDSI_CMD_PANEL},
 };
 
 static uint32_t panel_id;
@@ -107,9 +110,9 @@ int oem_panel_on()
 {
 	/* OEM can keep there panel specific on instructions in this
 	function */
-	if (panel_id == JDI_QHD_DUALDSI_CMD_PANEL) {
+	if (panel_id == JDI_QHD_DUALDSI_CMD_PANEL || panel_id == DUKE_WQHD_DUALDSI_CMD_PANEL) {
 		/* needs extra delay to avoid unexpected artifacts */
-		mdelay(JDI_QHD_DUALDSI_CMD_PANEL_ON_DELAY);
+		mdelay(17);
 
 	}
 	return NO_ERROR;
@@ -446,14 +449,12 @@ static bool init_panel_data(struct panel_struct *panelstruct,
 				sizeof(struct fb_compression));
 		break;
 	case DUKE_WQHD_DUALDSI_CMD_PANEL:
-		dprintf(ALWAYS, " DUKE command mode panel selected\n");
 		pan_type = PANEL_TYPE_DSI;
-		pinfo->lcd_reg_en = 1;
+		dprintf(ALWAYS, " DUKE command mode panel selected\n");
 		panelstruct->paneldata    = &duke_wqhd_dualdsi_cmd_panel_data;
+		panelstruct->paneldata->panel_operating_mode = DST_SPLIT_FLAG |
+					SPLIT_DISPLAY_FLAG;
 		panelstruct->paneldata->panel_with_enable_gpio = 0;
-
-		if (platform_is_msm8992())
-			panelstruct->paneldata->panel_operating_mode |= DUAL_DSI_FLAG;
 
 		panelstruct->panelres     = &duke_wqhd_dualdsi_cmd_panel_res;
 		panelstruct->color        = &duke_wqhd_dualdsi_cmd_color;
@@ -466,6 +467,9 @@ static bool init_panel_data(struct panel_struct *panelstruct,
 		panelstruct->panelresetseq
 					 = &duke_wqhd_dualdsi_cmd_reset_seq;
 		panelstruct->backlightinfo = &duke_wqhd_dualdsi_cmd_backlight;
+
+		pinfo->labibb = &duke_wqhd_dualdsi_cmd_labibb;
+
 		pinfo->mipi.panel_on_cmds
 			= duke_wqhd_dualdsi_cmd_on_command;
 		pinfo->mipi.num_of_panel_on_cmds
@@ -476,6 +480,7 @@ static bool init_panel_data(struct panel_struct *panelstruct,
 			= DUKE_WQHD_DUALDSI_CMD_OFF_COMMAND;
 		memcpy(phy_db->timing,
 			duke_wqhd_dualdsi_cmd_timings, TIMING_SIZE);
+		pinfo->mipi.tx_eot_append = true;
 		break;
 
 	case SERGEJ_WQHD_DUALDSI_CMD_PANEL:
@@ -485,7 +490,8 @@ static bool init_panel_data(struct panel_struct *panelstruct,
 		panelstruct->paneldata    = &sergej_wqhd_dualdsi_cmd_panel_data;
 		panelstruct->paneldata->panel_with_enable_gpio = 0;
 
-	    panelstruct->paneldata->panel_operating_mode |= DUAL_DSI_FLAG;
+		//Ping-pong
+	    panelstruct->paneldata->panel_operating_mode |= PIPE_SWAP_FLAG + DST_SPLIT_FLAG;
 
 		panelstruct->panelres     = &sergej_wqhd_dualdsi_cmd_panel_res;
 		panelstruct->color        = &sergej_wqhd_dualdsi_cmd_color;
@@ -508,6 +514,8 @@ static bool init_panel_data(struct panel_struct *panelstruct,
 			= SERGEJ_WQHD_DUALDSI_CMD_OFF_COMMAND;
 		memcpy(phy_db->timing,
 			sergej_wqhd_dualdsi_cmd_timings, TIMING_SIZE);
+		
+		pinfo->labibb = &duke_wqhd_dualdsi_cmd_labibb;
 		break;
 	default:
 	case UNKNOWN_PANEL:

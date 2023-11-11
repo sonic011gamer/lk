@@ -57,7 +57,7 @@ static struct panel_config duke_wqhd_dualdsi_cmd_panel_data = {
 	0, //virtualchannel_id
 	0, //broadcast_mode
 	1, //lp11_init
-	0, //init_delay
+	11, //init_delay
 	0, //dsi_stream
 	0, //interleave_mode
 	829875000, //bitclock_freq
@@ -195,7 +195,7 @@ static struct commandpanel_info duke_wqhd_dualdsi_cmd_command_panel = {
 	0, //tevsync_continue_lines
 	0, //tevsync_startline_divisor
 	0, //tepercent_variance
-	0, //tedcs_command
+	1, //tedcs_command
 	0, //disable_eotafter_hsxfer
 	0  //cmdmode_idletime
 };

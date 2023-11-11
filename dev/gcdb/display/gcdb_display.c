@@ -113,7 +113,7 @@ static int mdss_dsi_panel_power(uint8_t enable,
 				return ret;
 			}
 		}
-		dprintf(SPEW, "Panel power on done\n");
+		dprintf(INFO, "Panel power on done\n");
 	} else {
 		/* Disable panel and ldo */
 		ret = mdss_dsi_panel_reset(enable);
@@ -127,7 +127,7 @@ static int mdss_dsi_panel_power(uint8_t enable,
 			dprintf(CRITICAL, "ldo control disable failed\n");
 			return ret;
 		}
-		dprintf(SPEW, "Panel power off done\n");
+		dprintf(INFO, "Panel power off done\n");
 	}
 
 	return ret;
@@ -148,7 +148,7 @@ static int mdss_dsi_panel_pre_init(void)
 	if(panelstruct.paneldata->panel_init_delay)
 		udelay(panelstruct.paneldata->panel_init_delay);
 
-	dprintf(SPEW, "Panel pre init done\n");
+	dprintf(INFO, "Panel pre init done\n");
 	return ret;
 }
 
@@ -166,7 +166,7 @@ static int mdss_dsi_dfps_get_pll_codes_cal(struct msm_panel_info *pinfo)
 
 		err = mdss_dsi_panel_clock(1, pinfo);
 		if (!err) {
-			dprintf(SPEW, "frame_rate=%d, vcorate=%d success!\n",
+			dprintf(INFO, "frame_rate=%d, vcorate=%d success!\n",
 					pinfo->mipi.frame_rate,
 					pinfo->mipi.dsi_pll_config->vco_clock);
 			pinfo->dfps.codes_dfps[i].is_valid = 1;
@@ -237,7 +237,7 @@ static int mdss_dsi_dfps_get_stored_pll_codes(struct msm_panel_info *pinfo)
 		goto splash_err;
 	}
 
-	dprintf(SPEW, "enable=%d cnt=%d\n", dfps->panel_dfps.enabled,
+	dprintf(INFO, "enable=%d cnt=%d\n", dfps->panel_dfps.enabled,
 		dfps->panel_dfps.frame_rate_cnt);
 
 	if (!dfps->panel_dfps.enabled || dfps->panel_dfps.frame_rate_cnt >
@@ -295,7 +295,7 @@ static int mdss_dsi_mipi_dfps_config(struct msm_panel_info *pinfo)
 		goto dfps_done;
 
 	if (!mdss_dsi_dfps_get_stored_pll_codes(pinfo)) {
-		dprintf(SPEW, "Found stored PLL codes!\n");
+		dprintf(INFO, "Found stored PLL codes!\n");
 		goto dfps_cal_done;
 	}
 
@@ -304,7 +304,7 @@ static int mdss_dsi_mipi_dfps_config(struct msm_panel_info *pinfo)
 		dprintf(CRITICAL, "Cannot cal pll codes!\n");
 		goto dfps_done;
 	} else {
-		dprintf(SPEW, "Calibrate all pll codes!\n");
+		dprintf(INFO, "Calibrate all pll codes!\n");
 	}
 
 	ret = mdss_dsi_dfps_store_pll_codes(pinfo);
@@ -368,7 +368,7 @@ static int mdss_edp_panel_power(uint8_t enable,
 			dprintf(CRITICAL, "%s: panel enable failed\n", __func__);
 			return ret;
 		}
-		dprintf(SPEW, "EDP Panel power on done\n");
+		dprintf(INFO, "EDP Panel power on done\n");
 	} else {
 		/* Disable panel and ldo */
 		ret = mdss_edp_panel_disable();
@@ -382,7 +382,7 @@ static int mdss_edp_panel_power(uint8_t enable,
 			dprintf(CRITICAL, "%s: ldo control disable failed\n", __func__);
 			return ret;
 		}
-		dprintf(SPEW, "EDP Panel power off done\n");
+		dprintf(INFO, "EDP Panel power off done\n");
 	}
 
 	return ret;
@@ -543,7 +543,7 @@ int gcdb_display_init(const char *panel_name, uint32_t rev, void *base)
 		if (panel.panel_info.dfps.panel_dfps.enabled) {
 			panel.panel_info.dfps.dfps_fb_base = base;
 			base += DFPS_PLL_CODES_SIZE;
-			dprintf(SPEW, "dfps base=0x%p,d, fb_base=0x%p!\n",
+			dprintf(INFO, "dfps base=0x%p,d, fb_base=0x%p!\n",
 					panel.panel_info.dfps.dfps_fb_base, base);
 		}
 

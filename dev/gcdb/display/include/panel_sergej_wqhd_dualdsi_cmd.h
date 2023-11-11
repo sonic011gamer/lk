@@ -66,78 +66,58 @@ static struct color_info sergej_wqhd_dualdsi_cmd_color = {
 /* Panel on/off command information                                          */
 /*---------------------------------------------------------------------------*/
 static char sergej_wqhd_dualdsi_cmd_on_cmd0[] = {
-	0x11, 0xFF, 0xFF, 0x80
-};
-
-static char sergej_wqhd_dualdsi_cmd_on_cmd1[] = {
 	0x11, 0x00, 0x05, 0x80
 };
 
-static char sergej_wqhd_dualdsi_cmd_on_cmd2[] = {
-	0x05, 0xFF, 0xFF, 0x80
-};
-
-static char sergej_wqhd_dualdsi_cmd_on_cmd3[] = {
+static char sergej_wqhd_dualdsi_cmd_on_cmd1[] = {
 	0x03, 0x00, 0x39, 0xC0,
 	0xF0, 0x5A, 0x5A, 0xFF,
 };
 
-static char sergej_wqhd_dualdsi_cmd_on_cmd4[] = {
+static char sergej_wqhd_dualdsi_cmd_on_cmd2[] = {
 	0xF2, 0x63, 0x15, 0x80
 };
 
-static char sergej_wqhd_dualdsi_cmd_on_cmd5[] = {
+static char sergej_wqhd_dualdsi_cmd_on_cmd3[] = {
 	0x07, 0x00, 0x39, 0xC0,
 	0xBD, 0x11, 0x01, 0x02,
 	0x16, 0x02, 0x16, 0xFF,
 };
 
-static char sergej_wqhd_dualdsi_cmd_on_cmd6[] = {
+static char sergej_wqhd_dualdsi_cmd_on_cmd4[] = {
 	0x03, 0x00, 0x39, 0xC0,
 	0xF0, 0xA5, 0xA5, 0xFF,
 };
 
-static char sergej_wqhd_dualdsi_cmd_on_cmd7[] = {
-	0x17, 0xFF, 0xFF, 0x80
-};
-
-static char sergej_wqhd_dualdsi_cmd_on_cmd8[] = {
+static char sergej_wqhd_dualdsi_cmd_on_cmd5[] = {
 	0x53, 0x20, 0x15, 0x80
 };
 
-static char sergej_wqhd_dualdsi_cmd_on_cmd9[] = {
+static char sergej_wqhd_dualdsi_cmd_on_cmd6[] = {
 	0x51, 0x80, 0x15, 0x80
 };
 
-static char sergej_wqhd_dualdsi_cmd_on_cmd10[] = {
+static char sergej_wqhd_dualdsi_cmd_on_cmd7[] = {
 	0x35, 0x00, 0x15, 0x80
 };
 
-static char sergej_wqhd_dualdsi_cmd_on_cmd11[] = {
-	0x00, 0x00, 0x00, 0xFF, 0xFE, 0x80
-};
-
-static char sergej_wqhd_dualdsi_cmd_on_cmd12[] = {
+static char sergej_wqhd_dualdsi_cmd_on_cmd8[] = {
 	0x29, 0x00, 0x05, 0x80
 };
 
 static struct mipi_dsi_cmd sergej_wqhd_dualdsi_cmd_on_command[] = {
-	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd0, 0x00},
-	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd1, 0x00},
+	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd0, 0x05},
+	{0x8, sergej_wqhd_dualdsi_cmd_on_cmd1, 0x00},
 	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd2, 0x00},
-	{0x8, sergej_wqhd_dualdsi_cmd_on_cmd3, 0x00},
-	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd4, 0x00},
-	{0xc, sergej_wqhd_dualdsi_cmd_on_cmd5, 0x00},
-	{0x8, sergej_wqhd_dualdsi_cmd_on_cmd6, 0x00},
+	{0xc, sergej_wqhd_dualdsi_cmd_on_cmd3, 0x00},
+	{0x8, sergej_wqhd_dualdsi_cmd_on_cmd4, 0x17},
+	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd5, 0x00},
+	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd6, 0x00},
 	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd7, 0x00},
-	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd8, 0x00},
-	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd9, 0x00},
-	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd10, 0x00},
-	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd11, 0x00},
-	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd12, 0x00}
+	{0x4, sergej_wqhd_dualdsi_cmd_on_cmd8, 0x00}
 };
 
-#define SERGEJ_WQHD_DUALDSI_CMD_ON_COMMAND 13
+#define SERGEJ_WQHD_DUALDSI_CMD_ON_COMMAND 9
 
 
 static char sergej_wqhd_dualdsi_cmdoff_cmd0[] = {
@@ -145,25 +125,15 @@ static char sergej_wqhd_dualdsi_cmdoff_cmd0[] = {
 };
 
 static char sergej_wqhd_dualdsi_cmdoff_cmd1[] = {
-	0x21, 0xFF, 0xff, 0x80
-};
-
-static char sergej_wqhd_dualdsi_cmdoff_cmd2[] = {
-	0x10, 0x00, 0x05, 0x80
-};
-
-static char sergej_wqhd_dualdsi_cmdoff_cmd3[] = {
-	0x78, 0xFF, 0xff, 0x80
+	0xff, 0x78, 0x00, 0x80
 };
 
 static struct mipi_dsi_cmd sergej_wqhd_dualdsi_cmd_off_command[] = {
-	{0x4, sergej_wqhd_dualdsi_cmdoff_cmd0, 0x00},
-	{0x4, sergej_wqhd_dualdsi_cmdoff_cmd1, 0x00},
-	{0x4, sergej_wqhd_dualdsi_cmdoff_cmd2, 0x00},
-	{0x4, sergej_wqhd_dualdsi_cmdoff_cmd3, 0x00}
+	{0x4, sergej_wqhd_dualdsi_cmdoff_cmd0, 0x21},
+	{0x4, sergej_wqhd_dualdsi_cmdoff_cmd1, 0x78}
 };
 
-#define SERGEJ_WQHD_DUALDSI_CMD_OFF_COMMAND 4
+#define SERGEJ_WQHD_DUALDSI_CMD_OFF_COMMAND 2
 
 
 static struct command_state sergej_wqhd_dualdsi_cmd_state = {
@@ -181,7 +151,7 @@ static struct commandpanel_info sergej_wqhd_dualdsi_cmd_command_panel = {
 /* Video mode panel information                                              */
 /*---------------------------------------------------------------------------*/
 static struct videopanel_info sergej_wqhd_dualdsi_cmd_video_panel = {
-	16, 0, 0, 0, 1, 1, 2, 0, 0x9
+	1, 0, 0, 0, 1, 1, 2, 0, 0x9
 };
 
 /*---------------------------------------------------------------------------*/
@@ -195,11 +165,11 @@ static struct lane_configuration sergej_wqhd_dualdsi_cmd_lane_config = {
 /* Panel timing                                                              */
 /*---------------------------------------------------------------------------*/
 static const uint32_t sergej_wqhd_dualdsi_cmd_timings[] = {
-	0x5A, 0x3E, 0x1, 0x9A, 0x9A, 0x46, 0x5E, 0x48, 0x3, 0x4, 0x0
+	0xA1, 0x5A, 0x3E, 0x1, 0x9A, 0x9C, 0x46, 0x5E, 0x3A, 0x3, 0x4
 };
 
 static struct panel_timing sergej_wqhd_dualdsi_cmd_timing_info = {
-	0, 4, 0x60, 0x5
+	0, 4, 0x57, 0x4
 };
 
 /*---------------------------------------------------------------------------*/
@@ -213,7 +183,17 @@ static struct panel_reset_sequence sergej_wqhd_dualdsi_cmd_reset_seq = {
 /* Backlight setting                                                         */
 /*---------------------------------------------------------------------------*/
 static struct backlight sergej_wqhd_dualdsi_cmd_backlight = {
-	1, 1, 255, 100, 2, "PMIC_8994"
+	1, 0, 0, 0, 2, "PMIC_8941"
 };
-
+static struct labibb_desc sergej_wqhd_dualdsi_cmd_labibb = {
+	1, //amoled_panel
+	0, //force_config
+	4000000, //ibb_min_volt
+	4000000, //ibb_max_volt
+	4600000, //lab_min_volt
+	4600000, //lab_max_volt
+	3, //pwr_up_delay
+	3, //pwr_down_delay
+	1  //ibb_discharge_en
+};
 #endif /*_PANEL_SERGEJ_WQHD_DUALDSI_CMD_H_*/

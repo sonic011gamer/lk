@@ -98,6 +98,14 @@ static void log_putc(char c)
 }
 #endif /* WITH_DEBUG_LOG_BUF */
 
+
+char* lk_log_getbuf(void) {
+    return log.data;
+}
+unsigned lk_log_getsize(void) {
+    return log.header.size_written;
+}
+
 void display_fbcon_message(char *str)
 {
 #if ENABLE_FBCON_LOGGING

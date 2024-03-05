@@ -64,7 +64,6 @@ static struct panel_config tequila_720p_video_panel_data = {
 	.panel_operating_mode = 0,
 	.panel_with_enable_gpio = 0,
 	.mode_gpio_state = 0,
-	.slave_panel_node_id = ""
 };
 
 /*---------------------------------------------------------------------------*/
@@ -75,7 +74,7 @@ static struct panel_resolution tequila_720p_video_panel_res = {
 	.panel_height = 1280,
 	.hfront_porch = 76,
 	.hback_porch = 18,
-	.hpulse_width = 9,
+	.hpulse_width = 8,
 	.hsync_skew = 0,
 	.vfront_porch = 14,
 	.vback_porch = 8,
@@ -96,7 +95,7 @@ static struct panel_resolution tequila_720p_video_panel_res = {
 /*---------------------------------------------------------------------------*/
 static struct color_info tequila_720p_video_color = {
 	.color_format = 24,
-	.color_order = 2,
+	.color_order = 0,
 	.underflow_color = 0xff,
 	.border_color = 0,
 	.pixel_packing = 0,
@@ -165,8 +164,8 @@ static struct commandpanel_info tequila_720p_video_command_panel = {
 	.techeck_enable = 0,
 	.tepin_select = 0,
 	.teusing_tepin = 0,
-	.autorefresh_enable = 0,
-	.autorefresh_framenumdiv = 0,
+	.autorefresh_enable = 1,
+	.autorefresh_framenumdiv = 1,
 	.tevsync_rdptr_irqline = 0,
 	.tevsync_continue_lines = 0,
 	.tevsync_startline_divisor = 0,
@@ -180,7 +179,7 @@ static struct commandpanel_info tequila_720p_video_command_panel = {
 /* Video mode panel information                                              */
 /*---------------------------------------------------------------------------*/
 static struct videopanel_info tequila_720p_video_video_panel = {
-	.hsync_pulse = 8,
+	.hsync_pulse = 0,
 	.hfp_power_mode = 0,
 	.hbp_power_mode = 0,
 	.hsa_power_mode = 0,
@@ -208,13 +207,13 @@ static struct lane_configuration tequila_720p_video_lane_config = {
 /* Panel timing                                                              */
 /*---------------------------------------------------------------------------*/
 static const uint32_t tequila_720p_video_timings[] = {
-	0x76, 0x18, 0x10, 0x0, 0x3A, 0x46, 0xA, 0x1C, 0x12, 0x03, 0x04
+	0x76, 0x18, 0x10, 0x00, 0x3A, 0x46, 0x0A, 0x1C, 0x12, 0x03, 0x04, 0x00
 };
 
 static struct panel_timing tequila_720p_video_timing_info = {
 	.dsi_mdp_trigger = 0,
 	.dsi_dma_trigger = 4,
-	.tclk_post = 0xC2,
+	.tclk_post = 0xC3,
 	.tclk_pre = 0x14
 };
 
@@ -223,8 +222,8 @@ static struct panel_timing tequila_720p_video_timing_info = {
 /*---------------------------------------------------------------------------*/
 static struct panel_reset_sequence tequila_720p_video_reset_seq = {
 	.pin_state = {1, 0, 1, },
-	.sleep = {20, 20, 20, },
-	.pin_direction = 20
+	.sleep = {10, 10, 10, },
+	.pin_direction = 2
 };
 
 /*---------------------------------------------------------------------------*/
@@ -233,8 +232,8 @@ static struct panel_reset_sequence tequila_720p_video_reset_seq = {
 static struct backlight tequila_720p_video_backlight = {
 	.bl_interface_type = 1,
 	.bl_min_level = 1,
-	.bl_max_level = 255,
-	.bl_step = 100,
+	.bl_max_level = 128,
+	.bl_step = 10,
 	.bl_pmic_controltype = 2,
 	.bl_pmic_model = "PMIC_8941"
 };

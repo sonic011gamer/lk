@@ -252,15 +252,17 @@ static void fbcon_scroll_up(void)
 	if (!config)
 		return;
 
+	unsigned bytes_per_bpp = config->bpp / 8;
 	dst = config->base;
-	src = dst + (config->width * FONT_HEIGHT);
-	count = config->width * (config->height - FONT_HEIGHT);
+	src = dst + (config->width * FONT_HEIGHT * bytes_per_bpp);
+	count = config->width * (config->height - FONT_HEIGHT) * bytes_per_bpp;
 
 	while(count--) {
 		*dst++ = *src++;
 	}
 
-	count = config->width * FONT_HEIGHT;
+	count = (config->width * bytes_per_bpp) * FONT_HEIGHT;
+	dst = config->base + (config->width * config->height * bytes_per_bpp);
 	while(count--) {
 		*dst++ = BGCOLOR;
 	}

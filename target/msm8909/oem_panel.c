@@ -121,6 +121,8 @@ int oem_panel_on()
 	 */
 	if (panel_id == ILI9806E_FWVGA_VIDEO_PANEL)
 		mdelay(ILI9806E_FWVGA_VIDEO_PANEL_POST_INIT_DELAY);
+	if (panel_id == TEQUILA_720P_VIDEO_PANEL)
+		mdelay(10);
 
 	return NO_ERROR;
 }
